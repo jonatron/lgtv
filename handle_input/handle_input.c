@@ -12,6 +12,19 @@ B: EV=7
 B: KEY=7fffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe
 B: REL=0
 
+
+[MTPERIPHERAL]:MTSIF_ReadMultipleSubAddr
+ - ePort = 1
+u4ClkVal = 0x17c
+u1DevAddr = 0x52
+u2AddrCnt = 0x1
+u2DataCnt = 0x3
+
+
+./ltrace -p 580
+[pid   580] [415fa84c] ioctl(0x19, 0x40200c0c MTSIF_ReadMultipleSubAddr, 0x43901b48) = 0
+
+
 */
 
 #include <fcntl.h>
