@@ -111,6 +111,12 @@ int main(void)
    // double (*cosine)(double);
    int (*MTSIF_ReadMultipleSubAddr)(UINT32 ePort, UINT32 u4ClkVal, UINT8 u1DevAddr, UINT8 *pu1Addr,
         UINT16 u2AddrCnt, UINT8 *pu1Data, UINT16 u2DataCnt);
+   int (*_DRV_GetMtalDeviceHandle)(void);
+   int (*DRV_Init)(void);
+
+   int init_rc;
+   int device_handle;
+
    char *error;
    UINT8 subaddr[5];
    UINT8 data[5];
@@ -124,13 +130,20 @@ int main(void)
    dlerror();    /* Clear any existing error */
 
    // cosine = (double (*)(double)) dlsym(handle, "cos");
+   DRV_Init = dlsym(handle, "DRV_Init");
+   _DRV_GetMtalDeviceHandle = dlsym(handle, "_DRV_GetMtalDeviceHandle");
    MTSIF_ReadMultipleSubAddr = dlsym(handle, "MTSIF_ReadMultipleSubAddr");
 
    subaddr[0] = 0xc0;
 
+   init_rc = (*DRV_Init)();
+   printf("init %d\n", init_rc);
+
+   device_handle = (*_DRV_GetMtalDeviceHandle)();
+   printf("device_handle %d\n", device_handle);
 
    (*MTSIF_ReadMultipleSubAddr)(1, 0x17c, 0x52, subaddr, 0x1, data, 0x3);
-   printf("data %d, %d, %d.", data[0], data[1], data[2]);
+   printf("data %d, %d, %d.\n", data[0], data[1], data[2]);
 
    error = dlerror();
    if (error != NULL) {
